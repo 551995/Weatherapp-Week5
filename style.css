@@ -23,6 +23,9 @@ li {
   line-height: 1;
   list-style: none;
 }
+li::first-letter{
+  text-transform: capitalize;
+}
 
 .weather-app {
   border: 1px solid #dadde1;
