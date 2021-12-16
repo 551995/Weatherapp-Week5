@@ -22,7 +22,8 @@ function formatDate(date) {
 
     return `${day} ${hours}:${minutes}`;
 }
-function displayForecast(){
+function displayForecast(response) {
+    console.log(response.data.daily);
 let forecastElement = document.querySelector("#forecast");
 let days = ["Thu", "Fri", "Sat","Sun"];
 let forecastHTML = `<div class="row">`;
@@ -46,35 +47,38 @@ forecastHTML = forecastHTML +
     forecastHTML = forecastHTML + `</div>`;
     forecastElement.innerHTML = forecastHTML;
 }
-function displayWeatherCondition(response) {
+
+function getForecast(coordinates) {
+    console.log(coordinates);
+    let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
+
+    console.log(apiUrl);
+    axios.get(apiUrl).then(displayForecast);
+}
+
+function displayTemperature(response) {
     console.log(response.data);
     let temperatureElement = document.querySelector("#temperature");
     let cityElement = document.querySelector("#city");
     let descriptionElement = document.querySelector("#description");
     let humidityElement = document.querySelector("#humidity");
     let windElement = document.querySelector("#wind");
-    temperatureElement.innerHTML = Math.round(response.data.main.temp);
+
+celsiusTemperature = response.data.main.temp;
+
+    temperatureElement.innerHTML = Math.round(celsiusTemperature);
     cityElement.innerHTML = response.data.name;
     descriptionElement.innerHTML = response.data.weather[0].description;
     humidityElement.innerHTML = response.data.main.humidity;
     windElement.innerHTML = Math.round(response.data.wind.speed);
 
-    let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
-    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-
-    axios.get(apiUrl).then(displayTemperature);
-
-    document.querySelector("#humidity").innerHTML = response.data.main.humidity;
-    document.querySelector("#wind").innerHTML = Math.round(
-        response.data.wind.speed
-    );
-    document.querySelector("#description").innerHTML =
-        response.data.weather[0].main;
+    getForecast(response.data.coord);
 }
 function searchCity(city) {
     let apiKey = "75efa665ee3eb621f57f784ff0443f8e";
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-    axios.get(apiUrl).then(displayWeatherCondition);
+    axios.get(apiUrl).then(displayTemperature);
 }
 
 function handleSubmit(event) {
@@ -119,4 +123,3 @@ let currentLocationButton = document.querySelector("#current-location-button");
 currentLocationButton.addEventListener("click", getCurrentLocation);
 
 searchCity("Berlin");
-displayForecast ();
