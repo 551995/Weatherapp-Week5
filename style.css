@@ -39,6 +39,11 @@ margin: 30px auto;
 
 }
 
+.weather-forecast {
+  margin-top: 20px;
+  text-align: center;
+}
+
 .temperature {
   color: rgb(33, 33, 33);
   font-size: 64px;
@@ -57,4 +62,11 @@ margin: 30px auto;
 a,p{
   font-size: 100%;
   
+}
+.weather-forecast-date {
+  font-size: 16px;
+  color: green;
+}
+.weather-forecast-temperature{
+  font-size: 18px;
 }
